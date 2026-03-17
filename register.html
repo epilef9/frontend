@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <title>Registro</title>
   <style>
@@ -48,9 +49,88 @@
           </div>
         </div>
       </div>
+=======
+  <title>Registro - Hello World</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .registration-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      max-width: 500px;
+      width: 100%;
+    }
+    .registration-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    .registration-body {
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="registration-container">
+    <div class="registration-header">
+      <h2 class="mb-0">Crear Cuenta</h2>
+    </div>
+    <div class="registration-body">
+      <form id="registerForm">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre Completo</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="usuario" class="form-label">Usuario</label>
+          <input type="text" class="form-control" id="usuario" name="usuario" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="terminos" name="terminos" required>
+          <label class="form-check-label" for="terminos">
+            Acepto los términos y condiciones
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-2">Registrarse</button>
+        <a href="index.html" class="btn btn-secondary w-100">Volver al Inicio</a>
+      </form>
+
+      <hr>
+      <p class="text-center text-muted small">
+        ¿Ya tienes cuenta? <a href="#">Inicia sesión aquí</a>
+      </p>
+
     </div>
   </div>
 
   <script src="js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
