@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>Login</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="d-flex align-items-center py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="h3 mb-3 text-center">Iniciar sesion</h1>
+            <p class="text-muted text-center mb-4">Ingresa tus credenciales para continuar</p>
+
+            <form>
+              <div class="mb-3">
+                <label for="email">Correo electronico</label>
+                <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="password">Contrasena</label>
+                <input type="password" class="form-control" id="password" placeholder="********" required>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember-me">
+                  <label class="form-check-label" for="remember-me">Recordarme</label>
+                </div>
+                <a href="#" class="text-primary">Olvide mi contrasena</a>
+              </div>
+
+              <div>
+                <button type="submit" class="btn btn-primary btn-block mb-2">Entrar</button>
+                <a href="index.html" class="btn btn-outline-secondary btn-block">Volver al inicio</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
