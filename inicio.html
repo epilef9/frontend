@@ -12,7 +12,25 @@
         <div id="welcomeContainer" class="bg-white p-10 rounded-xl shadow-xl">
             <h1 id="greeting" class="text-4xl font-extrabold text-gray-800"></h1>
             <p class="text-gray-500 mt-2">¡Qué bueno verte de nuevo!</p>
-            <button onclick="window.location.href='index.html'" class="mt-6 text-indigo-600 underline">Cerrar Sesión</button>
+            <!-- mostrar tabla con lista de usuarios -->
+            <button id="verListaUsuarios">
+                Ver lista de usuarios
+            </button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-cuerpo">
+                    <!-- Aquí aparecerán los datos -->
+                </tbody>
+            </table>
+            <br>
+            <!-- Boton de cerrar sesion -->
+            <button onclick="window.location.href='index.html'" class="mt-6 text-indigo-600 underline">Cerrar Sesión
+            </button>
         </div>
     </div>
 
