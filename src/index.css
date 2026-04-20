@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Animación personalizada para el logo */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Patrón de fondo para el branding */
+.barber-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 35px,
+    rgba(220, 20, 60, 0.03) 35px,
+    rgba(220, 20, 60, 0.03) 70px
+  );
+}
