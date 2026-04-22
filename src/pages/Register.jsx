@@ -31,34 +31,8 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = {};
-
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre es requerido';
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email no válido';
-    }
-    if (!formData.telefono.trim()) {
-      newErrors.telefono = 'El teléfono es requerido';
-    }
-    if (!formData.password.trim()) {
-      newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-    }
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setSuccess('¡Registro exitoso!');
+    setErrors({});
+    setSuccess('Registro deshabilitado por el momento.');
     setTimeout(() => {
       setFormData({
         nombre: '',
@@ -220,8 +194,9 @@ export default function Register() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="correo@ejemplo.com"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm outline-none transition focus:border-[#2AACE8] focus:bg-[#2AACE8]/10 focus:ring-2 focus:ring-[#2AACE8]/20"
+                placeholder="Registro de email deshabilitado"
+                disabled
+                className="w-full bg-zinc-500/20 border border-zinc-400/30 rounded-xl px-4 py-3 text-zinc-300 placeholder-zinc-400 text-sm cursor-not-allowed"
               />
               {errors.email && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.email}</p>
