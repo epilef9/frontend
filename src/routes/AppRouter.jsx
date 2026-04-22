@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -8,6 +9,12 @@ import Dashboard from '../pages/Dashboard';
 
 
 function AppRouter() {
+  useEffect(() => {
+    localStorage.removeItem('barberia_users_v1');
+    localStorage.removeItem('barberia_session_v1');
+    localStorage.removeItem('barberia_reservas_v1');
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

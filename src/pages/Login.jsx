@@ -61,12 +61,7 @@ export default function Login() {
       return;
     }
 
-    setSuccess('¡Inicio de sesión exitoso!');
-    setTimeout(() => {
-      setFormData({ email: '', password: '' });
-      setErrors({});
-      setSuccess('');
-    }, 2000);
+    setSuccess('Ingreso realizado.');
   };
 
   return (

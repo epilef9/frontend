@@ -28,47 +28,13 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = {};
-
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre es requerido';
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    }
-    if (!formData.telefono.trim()) {
-      newErrors.telefono = 'El teléfono es requerido';
-    }
-    if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-    }
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setSuccess('¡Registro exitoso!');
-    setFormData({
-      nombre: '',
-      email: '',
-      telefono: '',
-      password: '',
-      confirmPassword: ''
-    });
     setErrors({});
-
-    setTimeout(() => {
-      setSuccess('');
-    }, 3000);
+    setSuccess('Registro deshabilitado.');
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-black p-10<<<<<<<<<<<<<<<<<<<<<rounded-lg">
+      <div className="w-full max-w-md bg-black p-10 rounded-lg">
         
         <div className="text-center mb-8">
           <h2 className="text-4xl font-bold text-white mb-2">Crear cuenta</h2>
@@ -105,8 +71,9 @@ export default function Register() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="tu@email.com"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-gray-50"
+              placeholder="Registro de email deshabilitado"
+              disabled
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-200 text-gray-500 cursor-not-allowed"
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-600">{errors.email}</p>
