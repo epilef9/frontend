@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import logoImage from '../assets/images/logo.jpeg';
+import Navbar from '../components/Navbar';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -47,7 +48,8 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden flex items-center justify-center p-4 pt-24">
+      <Navbar />
       {/* Background Layers */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');

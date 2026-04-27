@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 export default function Reservar() {
     const today = useMemo(() => {
@@ -19,7 +20,8 @@ export default function Reservar() {
     const reservedHours = ['09:00', '12:00', '16:00', '19:00'];
 
     return (
-        <div className="min-h-screen bg-[#0E0E0E] text-white relative overflow-hidden px-4 py-10 font-dm">
+        <div className="min-h-screen bg-[#0E0E0E] text-white relative overflow-hidden px-4 py-10 pt-28 font-dm">
+            <Navbar />
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 
