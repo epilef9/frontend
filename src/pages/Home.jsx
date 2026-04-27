@@ -8,7 +8,7 @@ import { Scissors, Star, Calendar, Sparkles, MoveRight, User, HelpCircle, LogIn,
 export default function Home() {
     // por ahora hardcodeado 
     // cambiar el usestate a true para simular que esta logueado y ponerlo en false para anonimo
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
 
     return (
         <div className="home-container bg-[#050505] min-h-screen font-sans overflow-hidden relative">
