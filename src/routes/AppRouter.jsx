@@ -27,8 +27,8 @@ function AppRouter() {
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* Redirección por defecto */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>
   );

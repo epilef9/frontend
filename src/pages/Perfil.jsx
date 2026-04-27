@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 
 export default function Perfil() {
     // Datos de ejemplo del usuario
@@ -57,7 +58,8 @@ export default function Perfil() {
     ]);
 
     return (
-        <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden px-4 py-10">
+        <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden px-4 py-10 pt-28">
+            <Navbar />
             {/*Background*/}
             <div className="glow-red" />
             <div className="glow-blue" />

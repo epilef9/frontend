@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import logoImage from '../assets/images/logo.jpeg';
+import Navbar from '../components/Navbar';
 
 // SVG Icons for Social
 const GoogleIcon = () => (
@@ -70,7 +71,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden flex items-center justify-center p-4 pt-24">
+      <Navbar />
       {/* Background Layers */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
@@ -140,6 +142,7 @@ export default function Login() {
         .delay-5 { animation-delay: 0.3s; }
       `}</style>
 
+        
       {/* Background Blobs */}
       <div className="glow-red" />
       <div className="glow-blue" />
