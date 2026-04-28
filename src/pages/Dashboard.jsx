@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 
+// datos falsos para tener algo visual
 const ESTADOS = ['Pendiente', 'Confirmado', 'Completado', 'Cancelado'];
 const SERVICIOS = ['Corte clásico', 'Fade', 'Barba', 'Corte + Barba', 'Tratamiento capilar'];
 const PELUQUEROS = ['Carlos', 'Miguel', 'Sofía', 'Lucía'];
@@ -39,6 +40,7 @@ const emptyForm = {
 };
 
 export default function Dashboard() {
+  // estados principales de la vista y crud
   const [turnos, setTurnos] = useState(initialTurnos);
   const [formData, setFormData] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
@@ -47,6 +49,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // filtra turnos por texto y select de estado
   const turnosFiltrados = useMemo(() => {
     const term = search.trim().toLowerCase();
 
@@ -64,6 +67,7 @@ export default function Dashboard() {
     });
   }, [turnos, search, filtroEstado]);
 
+  // calcula los contadores para las tarjetas superiores
   const resumen = useMemo(() => {
     return {
       total: turnos.length,
@@ -73,17 +77,20 @@ export default function Dashboard() {
     };
   }, [turnos]);
 
+  // limpia alertas de éxito o error
   const clearMessages = () => {
     setError('');
     setSuccess('');
   };
 
+  // sincroniza inputs con el estado del form
   const handleChange = (e) => {
     const { name, value } = e.target;
     clearMessages();
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // validación rápida antes de enviar
   const validateForm = () => {
     if (!formData.cliente.trim()) return 'El nombre del cliente es obligatorio.';
     if (!formData.telefono.trim()) return 'El teléfono es obligatorio.';
@@ -97,6 +104,7 @@ export default function Dashboard() {
     setEditId(null);
   };
 
+  // procesa la creación o actualización de turnos
   const handleSubmit = (e) => {
     e.preventDefault();
     clearMessages();
@@ -135,6 +143,7 @@ export default function Dashboard() {
     resetForm();
   };
 
+  // carga el turno seleccionado en el formulario para editar
   const handleEdit = (turno) => {
     clearMessages();
     setEditId(turno.id);
@@ -149,6 +158,7 @@ export default function Dashboard() {
     });
   };
 
+  // elimina el turno de la lista local
   const handleDelete = (id) => {
     clearMessages();
     setTurnos((prev) => prev.filter((t) => t.id !== id));
@@ -156,6 +166,7 @@ export default function Dashboard() {
     setSuccess('Turno eliminado.');
   };
 
+  // actualiza el select de estado directamente desde la tabla
   const handleEstadoChange = (id, nuevoEstado) => {
     clearMessages();
     setTurnos((prev) =>
