@@ -4,6 +4,8 @@ import logoImage from '../assets/images/logo.jpeg';
 import Navbar from '../components/Navbar';
 
 export default function Register() {
+  // Estado para almacenar los datos del formulario de registro
+  // Incluye: nombre, email, teléfono, contraseña y confirmación de contraseña
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -11,17 +13,33 @@ export default function Register() {
     password: '',
     confirmPassword: ''
   });
+
+  // Estado para controlar la visibilidad de la contraseña
+  // Se usa para mostrar/ocultar el icono del ojo en el campo de contraseña
   const [showPassword, setShowPassword] = useState(false);
+
+  // Estado para controlar la visibilidad de la confirmación de contraseña
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Estado para almacenar los errores de validación del formulario
+  // Ejemplo: { nombre: "El nombre es requerido" }
   const [errors, setErrors] = useState({});
+
+  // Estado para mostrar mensajes de éxito después de enviar el formulario
   const [success, setSuccess] = useState('');
 
+  // Función que se ejecuta cuando el usuario escribe en cualquier campo del formulario
+  // Actualiza el estado de formData y limpia el error del campo si existía
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Actualiza el valor del campo correspondiente en formData
     setFormData({
       ...formData,
       [name]: value
     });
+
+    // Si había un error en este campo, lo limpia cuando el usuario comienza a escribir
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -30,10 +48,17 @@ export default function Register() {
     }
   };
 
+  // Función que se ejecuta cuando el usuario intenta enviar el formulario
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Limpia los errores previos
     setErrors({});
+    
+    // Muestra mensaje de que el registro está deshabilitado
     setSuccess('Registro deshabilitado por el momento.');
+    
+    // Después de 2 segundos, limpia el formulario y los mensajes
     setTimeout(() => {
       setFormData({
         nombre: '',
@@ -48,95 +73,20 @@ export default function Register() {
   };
 
   return (
+    // Contenedor principal con fondooscuro y animaciones de entrada
     <div className="min-h-screen bg-[#0E0E0E] font-dm relative overflow-hidden flex items-center justify-center p-4 pt-24">
+      {/* Navbar con navegación */}
       <Navbar />
-      {/* Background Layers */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
-        
-        /* Background glow blobs */
-        .glow-red {
-          position: fixed;
-          top: -200px;
-          right: -200px;
-          width: 600px;
-          height: 600px;
-          border-radius: 50%;
-          background: #E8362A;
-          filter: blur(120px);
-          opacity: 0.15;
-          pointer-events: none;
-          z-index: 0;
-        }
-        
-        .glow-blue {
-          position: fixed;
-          bottom: -200px;
-          left: -200px;
-          width: 600px;
-          height: 600px;
-          border-radius: 50%;
-          background: #2AACE8;
-          filter: blur(120px);
-          opacity: 0.15;
-          pointer-events: none;
-          z-index: 0;
-        }
-        
-        .stripe-texture {
-          position: fixed;
-          inset: 0;
-          background-image: repeating-linear-gradient(
-            -55deg,
-            transparent 0px,
-            transparent 1px,
-            rgba(255, 255, 255, 0.02) 1px,
-            rgba(255, 255, 255, 0.02) 2px
-          );
-          pointer-events: none;
-          z-index: 0;
-        }
-        
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-slide-up {
-          animation: slideUp 0.6s ease-out both;
-        }
-        
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.15s; }
-        .delay-3 { animation-delay: 0.2s; }
-        .delay-4 { animation-delay: 0.25s; }
-        .delay-5 { animation-delay: 0.3s; }
-        
-        /* Hide scrollbar but keep scrolling functionality */
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
 
-      {/* Background Blobs */}
+      {/* Fondos decorativos con efecto de brillo */}
       <div className="glow-red" />
       <div className="glow-blue" />
       <div className="stripe-texture" />
 
-      {/* Content */}
+      {/* Contenedor de contenido principal */}
       <div className="relative z-10 w-full max-w-md mx-auto">
         
-        {/* Logo */}
+        {/* Logo de la barbería con animación de entrada */}
         <div className="animate-slide-up delay-1 flex justify-center mb-8">
           <div className="relative w-28 h-28 rounded-full border-2 border-white/20 bg-black flex items-center justify-center ring-4 ring-white/5 shadow-lg overflow-hidden">
             <img 
@@ -147,7 +97,7 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Heading Block */}
+        {/* Encabezado con título y subtítulo */}
         <div className="animate-slide-up delay-2 text-center mb-6">
           <h1 className="font-bebas text-5xl tracking-widest text-white leading-tight">
             REGISTRO
@@ -157,18 +107,19 @@ export default function Register() {
           </p>
         </div>
 
-        {/* Accent Divider */}
+        {/* Línea divisora decorativa con colores de gradiente */}
         <div className="animate-slide-up delay-3 flex items-center gap-3 mb-8">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#E8362A]" />
           <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
           <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#2AACE8]" />
         </div>
 
-        {/* Card */}
+        {/* Tarjeta del formulario con efecto de vidrio y animación */}
         <div className="animate-slide-up delay-4 bg-white/5 backdrop-blur-xl border border-white/8 rounded-3xl p-8 shadow-2xl max-h-[85vh] overflow-y-auto hide-scrollbar">
+          {/* Formulario de registro */}
           <form onSubmit={handleSubmit} className="space-y-4">
             
-            {/* Nombre Input */}
+            {/* Campo de entrada: Nombre completo */}
             <div>
               <label className="block text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2">
                 Nombre completo
@@ -181,12 +132,13 @@ export default function Register() {
                 placeholder="Juan Pérez"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm outline-none transition focus:border-[#2AACE8] focus:bg-[#2AACE8]/10 focus:ring-2 focus:ring-[#2AACE8]/20"
               />
+              {/* Muestra mensaje de error si existe */}
               {errors.nombre && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.nombre}</p>
               )}
             </div>
 
-            {/* Email Input */}
+            {/* Campo de entrada: Email (deshabilitado) */}
             <div>
               <label className="block text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2">
                 Email
@@ -200,12 +152,13 @@ export default function Register() {
                 disabled
                 className="w-full bg-zinc-500/20 border border-zinc-400/30 rounded-xl px-4 py-3 text-zinc-300 placeholder-zinc-400 text-sm cursor-not-allowed"
               />
+              {/* Muestra mensaje de error si existe */}
               {errors.email && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.email}</p>
               )}
             </div>
 
-            {/* Teléfono Input */}
+            {/* Campo de entrada: Teléfono */}
             <div>
               <label className="block text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2">
                 Teléfono
@@ -218,12 +171,13 @@ export default function Register() {
                 placeholder="099 123 456"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm outline-none transition focus:border-[#2AACE8] focus:bg-[#2AACE8]/10 focus:ring-2 focus:ring-[#2AACE8]/20"
               />
+              {/* Muestra mensaje de error si existe */}
               {errors.telefono && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.telefono}</p>
               )}
             </div>
 
-            {/* Password Input */}
+            {/* Campo de entrada: Contraseña con toggle para mostrar/ocultar */}
             <div>
               <label className="block text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2">
                 Contraseña
@@ -237,6 +191,7 @@ export default function Register() {
                   placeholder="•••••••••"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm outline-none transition focus:border-[#2AACE8] focus:bg-[#2AACE8]/10 focus:ring-2 focus:ring-[#2AACE8]/20"
                 />
+                {/* Botón para mostrar/ocultar contraseña */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -245,12 +200,13 @@ export default function Register() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {/* Muestra mensaje de error si existe */}
               {errors.password && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.password}</p>
               )}
             </div>
 
-            {/* Confirm Password Input */}
+            {/* Campo de entrada: Confirmación de contraseña con toggle */}
             <div>
               <label className="block text-[10px] tracking-[0.2em] uppercase text-white/50 mb-2">
                 Confirmar contraseña
@@ -264,6 +220,7 @@ export default function Register() {
                   placeholder="•••••••••"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm outline-none transition focus:border-[#2AACE8] focus:bg-[#2AACE8]/10 focus:ring-2 focus:ring-[#2AACE8]/20"
                 />
+                {/* Botón para mostrar/ocultar confirmación de contraseña */}
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -272,19 +229,20 @@ export default function Register() {
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {/* Muestra mensaje de error si existe */}
               {errors.confirmPassword && (
                 <p className="mt-2 text-xs text-[#E8362A]">{errors.confirmPassword}</p>
               )}
             </div>
 
-            {/* Success Message */}
+            {/* Mensaje de éxito que se muestra después de enviar el formulario */}
             {success && (
               <div className="p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
                 <p className="text-sm text-green-300 text-center">{success}</p>
               </div>
             )}
 
-            {/* Register Button */}
+            {/* Botón de envío del formulario */}
             <button
               type="submit"
               className="w-full py-4 rounded-xl font-bebas text-lg tracking-[0.15em] text-white bg-[#E8362A] hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(232,54,42,0.45)] transition-all mt-2"
@@ -294,7 +252,7 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Login Link */}
+        {/* Enlace para ir a la página de login */}
         <div className="animate-slide-up delay-5 text-center mt-6">
           <p className="text-xs text-white/40">
             ¿Ya tienes cuenta?{' '}
