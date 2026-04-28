@@ -10,7 +10,7 @@ export default function Perfil() {
         imagen: 'https://via.placeholder.com/150',
         miembro_desde: '2024-01-15'
     });
-
+    
     // Ejemplo de turnos reservados
     const [turnosReservados] = useState([
         {

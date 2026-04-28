@@ -5,7 +5,7 @@ import { Scissors, HelpCircle, LogIn } from 'lucide-react';
 export default function Navbar() {
     // por ahora hardcodeado 
     // cambiar el usestate a true para simular que esta logueado y ponerlo en false para anonimo
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
 
     // nav arriba, lo puse fixed asi te persigue
     return (
