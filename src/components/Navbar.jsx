@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Scissors, HelpCircle, LogIn } from 'lucide-react';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Scissors, HelpCircle, LogIn, LogOut, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-    // por ahora hardcodeado 
-    // cambiar el usestate a true para simular que esta logueado y ponerlo en false para anonimo
-    const [isLogged, setIsLogged] = useState(false);
+    const navigate = useNavigate();
+    const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
     // nav arriba, lo puse fixed asi te persigue
     return (
@@ -24,14 +24,44 @@ export default function Navbar() {
 
             {/* zona derecha: botonera de sesion o modo anonimo  */}
             <div className="flex items-center gap-4">
-                {isLogged ? (
-                    // si metio clave y esta logueado mostramos foto y nombre
-                    <a href="/perfil" className="flex items-center gap-3 bg-zinc-900/50 border border-zinc-800 px-4 py-2 rounded-full hover:border-cyan-500/50 hover:bg-cyan-900/20 transition-all cursor-pointer group">
-                        <div className="w-8 h-8 rounded-full bg-zinc-800 p-1 flex items-center justify-center border border-zinc-700 overflow-hidden">
-                            <img src="https://i.pravatar.cc/100?img=33" className="rounded-full w-full h-full object-cover" alt="Usuario" />
-                        </div>
-                        <span className="text-white text-xs font-bold uppercase tracking-wider group-hover:text-cyan-400 transition-colors">Matías</span>
-                    </a>
+                {isAuthenticated ? (
+                    // si inicio sesion, mostramos nombre, botones de accion y cerrar sesion
+                    <div className="flex items-center gap-3">
+                        {/* Perfil del usuario */}
+                        <Link to="/perfil" className="flex items-center gap-3 bg-zinc-900/50 border border-zinc-800 px-4 py-2 rounded-full hover:border-cyan-500/50 hover:bg-cyan-900/20 transition-all cursor-pointer group">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 p-1 flex items-center justify-center border border-zinc-700 overflow-hidden font-bold text-white text-xs">
+                                {user?.nombre?.charAt(0)?.toUpperCase() || '?'}
+                            </div>
+                            <span className="text-white text-xs font-bold uppercase tracking-wider group-hover:text-cyan-400 transition-colors">
+                                {isAdmin ? 'Administrador' : (user?.nombre || 'Usuario')}
+                            </span>
+                        </Link>
+
+                        {/* Botón Dashboard si es Admin */}
+                        {isAdmin && (
+                            <button
+                                onClick={() => navigate('/dashboard')}
+                                className="hidden sm:flex items-center gap-2 bg-cyan-500/20 border border-cyan-500/50 px-4 py-2 rounded-lg text-cyan-300 text-xs font-bold uppercase tracking-widest hover:bg-cyan-500/30 hover:border-cyan-400 transition-all"
+                                title="Ir al Dashboard"
+                            >
+                                <LayoutDashboard size={16} />
+                                <span>Dashboard</span>
+                            </button>
+                        )}
+
+                        {/* Botón Cerrar Sesión */}
+                        <button
+                            onClick={async () => {
+                                await logout();
+                                navigate('/home');
+                            }}
+                            className="flex items-center gap-2 bg-red-500/20 border border-red-500/50 px-4 py-2 rounded-lg text-red-300 text-xs font-bold uppercase tracking-widest hover:bg-red-500/30 hover:border-red-400 transition-all"
+                            title="Cerrar sesión"
+                        >
+                            <LogOut size={16} />
+                            <span className="hidden sm:inline">Salir</span>
+                        </button>
+                    </div>
                 ) : (
                     // si no inicio sesion mostramos el modo anonimo con un iconito y el boton de login
                     <div className="flex items-center gap-4">
@@ -39,10 +69,10 @@ export default function Navbar() {
                             <HelpCircle size={18} className="text-zinc-600" />
                             <span className="text-[10px] font-bold uppercase tracking-widest">Anónimo</span>
                         </div>
-                        <a href="/login" className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-none text-xs font-black uppercase tracking-widest hover:bg-cyan-400 hover:text-black transition-all">
+                        <Link to="/login" className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-none text-xs font-black uppercase tracking-widest hover:bg-cyan-400 hover:text-black transition-all">
                             <LogIn size={16} />
                             Acceder
-                        </a>
+                        </Link>
                     </div>
                 )}
 

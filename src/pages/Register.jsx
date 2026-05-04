@@ -148,9 +148,9 @@ export default function Register() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Registro de email deshabilitado"
-                disabled
-                className="w-full bg-zinc-500/20 border border-zinc-400/30 rounded-xl px-4 py-3 text-zinc-300 placeholder-zinc-400 text-sm cursor-not-allowed"
+                placeholder="ejemplo@barberia.com"
+                
+                className="w-full bg-zinc-500/20 border border-zinc-400/30 rounded-xl px-4 py-3 text-zinc-300 placeholder-zinc-400 text-sm "
               />
               {/* Muestra mensaje de error si existe */}
               {errors.email && (

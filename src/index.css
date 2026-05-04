@@ -32,7 +32,6 @@
   pointer-events: none;
   z-index: 0;
 }
-
 .stripe-texture {
   position: fixed;
   inset: 0;

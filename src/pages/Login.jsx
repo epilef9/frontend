@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import logoImage from '../assets/images/logo.jpeg';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
 
 // Componente de icono SVG para Google
 // Representa el logo de Google para el botón de login social
@@ -23,6 +25,9 @@ const FacebookIcon = () => (
 );
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login, loading, error: authError } = useAuth();
+
   // Estado para almacenar los datos del formulario de login
   // Incluye: email y contraseña
   const [formData, setFormData] = useState({
@@ -90,15 +95,26 @@ export default function Login() {
       return;
     }
 
-    // Si no hay errores, muestra mensaje de éxito
-    setSuccess('¡Inicio de sesión exitoso!');
-    
-    // Después de 2 segundos, limpia el formulario y los mensajes
-    setTimeout(() => {
-      setFormData({ email: '', password: '' });
-      setErrors({});
-      setSuccess('');
-    }, 2000);
+    // Intenta hacer login con el contexto de autenticación
+    handleLoginSubmit();
+  };
+
+  const handleLoginSubmit = async () => {
+    const result = await login(formData.email, formData.password);
+
+    if (result.success) {
+      setSuccess('¡Inicio de sesión exitoso!');
+      
+      // Redirige al usuario después de 1.5 segundos
+      setTimeout(() => {
+        // Si es admin, va al dashboard; si no, va al home
+        const redirectTo = result.user.rol === 'admin' ? '/dashboard' : '/home';
+        navigate(redirectTo);
+      }, 1500);
+    } else {
+      // Muestra el error del contexto si el login falla
+      setErrors({ submit: result.error });
+    }
   };
 
   return (
@@ -210,12 +226,20 @@ export default function Login() {
               </div>
             )}
 
+            {/* Mensaje de error del servidor */}
+            {errors.submit && (
+              <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <p className="text-sm text-red-300 text-center">{errors.submit}</p>
+              </div>
+            )}
+
             {/* Botón de envío del formulario */}
             <button
               type="submit"
-              className="w-full py-4 rounded-xl font-bebas text-lg tracking-[0.15em] text-white bg-[#E8362A] hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(232,54,42,0.45)] transition-all"
+              disabled={loading}
+              className="w-full py-4 rounded-xl font-bebas text-lg tracking-[0.15em] text-white bg-[#E8362A] hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(232,54,42,0.45)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ENTRAR
+              {loading ? 'INGRESANDO...' : 'ENTRAR'}
             </button>
           </form>
 
