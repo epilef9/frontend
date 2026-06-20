@@ -152,12 +152,26 @@ export default function Dashboard() {
     }
   };
 
-  // actualiza el select de estado directamente desde la tabla
-  const handleEstadoChange = (id, nuevoEstado) => {
+  // actualiza el select de estado directamente desde la tabla y persiste en backend
+  const handleEstadoChange = async (id, nuevoEstado) => {
     clearMessages();
+    // Actualizar localmente para feedback inmediato
     setTurnos((prev) =>
       prev.map((t) => (t.id === id ? { ...t, estado: nuevoEstado } : t))
     );
+    try {
+      // Encontrar el turno completo para enviar todos los datos al backend
+      const turno = turnos.find((t) => t.id === id);
+      if (turno) {
+        await turnosAPI.update(id, { ...turno, estado: nuevoEstado });
+      }
+    } catch (err) {
+      setError('Error al actualizar estado');
+      console.error(err);
+      // Revertir el cambio local si falla el backend
+      const response = await turnosAPI.getAll();
+      setTurnos(response.data);
+    }
   };
 
   return (

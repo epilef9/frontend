@@ -33,7 +33,7 @@ export default function Navbar() {
                                 {user?.nombre?.charAt(0)?.toUpperCase() || '?'}
                             </div>
                             <span className="text-white text-xs font-bold uppercase tracking-wider group-hover:text-cyan-400 transition-colors">
-                                {isAdmin ? 'Administrador' : (user?.nombre || 'Usuario')}
+                                {user?.nombre || 'Usuario'}
                             </span>
                         </Link>
 

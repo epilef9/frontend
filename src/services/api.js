@@ -36,6 +36,7 @@ export const serviciosAPI = {
 export const usuariosAPI = {
   getAll: () => axios.get(`${API_URL}/usuarios`),
   getById: (id) => axios.get(`${API_URL}/usuarios/${id}`),
+  getByEmail: (email) => axios.get(`${API_URL}/usuarios/email/${email}`),
   create: (data) => axios.post(`${API_URL}/usuarios`, data),
   update: (id, data) => axios.put(`${API_URL}/usuarios/${id}`, data),
   delete: (id) => axios.delete(`${API_URL}/usuarios/${id}`)
