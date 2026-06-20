@@ -1,53 +1,53 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import { turnosAPI, serviciosAPI, usuariosAPI } from '../services/api';
 
-// datos falsos para tener algo visual
 const ESTADOS = ['Pendiente', 'Confirmado', 'Completado', 'Cancelado'];
-const SERVICIOS = ['Corte clásico', 'Fade', 'Barba', 'Corte + Barba', 'Tratamiento capilar'];
-const PELUQUEROS = ['Carlos', 'Miguel', 'Sofía', 'Lucía'];
-
-const initialTurnos = [
-  {
-    id: 1,
-    cliente: 'Juan Pérez',
-    telefono: '099 123 456',
-    fecha: '2026-05-02',
-    hora: '10:00',
-    servicio: 'Fade',
-    peluquero: 'Carlos',
-    estado: 'Pendiente'
-  },
-  {
-    id: 2,
-    cliente: 'Ana Gómez',
-    telefono: '098 222 111',
-    fecha: '2026-05-02',
-    hora: '11:00',
-    servicio: 'Corte + Barba',
-    peluquero: 'Miguel',
-    estado: 'Confirmado'
-  }
-];
 
 const emptyForm = {
   cliente: '',
   telefono: '',
   fecha: '',
   hora: '',
-  servicio: SERVICIOS[0],
-  peluquero: PELUQUEROS[0],
+  servicio: '',
+  peluquero: '',
   estado: 'Pendiente'
 };
 
 export default function Dashboard() {
-  // estados principales de la vista y crud
-  const [turnos, setTurnos] = useState(initialTurnos);
+  const [turnos, setTurnos] = useState([]);
+  const [serviciosList, setServiciosList] = useState([]);
+  const [peluquerosList, setPeluquerosList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('Todos');
-  const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+    useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [resTurnos, resServicios, resUsuarios] = await Promise.all([
+          turnosAPI.getAll(),
+          serviciosAPI.getAll(),
+          usuariosAPI.getAll()
+        ]);
+        setTurnos(resTurnos.data);
+        setServiciosList(resServicios.data);
+        setPeluquerosList(resUsuarios.data.filter(u => u.rol === 'ADMIN'));
+      } catch (err) {
+        setError('Error al cargar datos');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // filtra turnos por texto y select de estado
   const turnosFiltrados = useMemo(() => {
@@ -105,42 +105,25 @@ export default function Dashboard() {
   };
 
   // procesa la creación o actualización de turnos
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    clearMessages();
-
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
+    
+    try {
+      if (editId) {
+        await turnosAPI.update(editId, formData);
+        setSuccess('Turno actualizado');
+      } else {
+        await turnosAPI.create(formData);
+        setSuccess('Turno creado');
+      }
+      
+      // Recargar turnos
+      const response = await turnosAPI.getAll();
+      setTurnos(response.data);
+      resetForm();
+    } catch (err) {
+      setError('Error al guardar turno');
     }
-
-    if (editId) {
-      setTurnos((prev) =>
-        prev.map((t) =>
-          t.id === editId
-            ? {
-                ...t,
-                ...formData,
-                cliente: formData.cliente.trim(),
-                telefono: formData.telefono.trim()
-              }
-            : t
-        )
-      );
-      setSuccess('Turno actualizado correctamente.');
-    } else {
-      const nuevoTurno = {
-        id: Date.now(),
-        ...formData,
-        cliente: formData.cliente.trim(),
-        telefono: formData.telefono.trim()
-      };
-      setTurnos((prev) => [nuevoTurno, ...prev]);
-      setSuccess('Turno creado correctamente.');
-    }
-
-    resetForm();
   };
 
   // carga el turno seleccionado en el formulario para editar
@@ -159,11 +142,14 @@ export default function Dashboard() {
   };
 
   // elimina el turno de la lista local
-  const handleDelete = (id) => {
-    clearMessages();
-    setTurnos((prev) => prev.filter((t) => t.id !== id));
-    if (editId === id) resetForm();
-    setSuccess('Turno eliminado.');
+  const handleDelete = async (id) => {
+    try {
+      await turnosAPI.delete(id);
+      setTurnos(prev => prev.filter(t => t.id !== id));
+      setSuccess('Turno eliminado');
+    } catch (err) {
+      setError('Error al eliminar');
+    }
   };
 
   // actualiza el select de estado directamente desde la tabla
@@ -289,9 +275,10 @@ export default function Dashboard() {
                   onChange={handleChange}
                   className="w-full bg-[#050505] border border-zinc-800/80 text-white rounded-none px-4 py-3 text-xs outline-none focus:border-cyan-500/50 focus:bg-cyan-950/10 transition-all"
                 >
-                  {SERVICIOS.map((servicio) => (
-                    <option key={servicio} value={servicio} className="bg-[#0A0A0A]">
-                      {servicio}
+                  <option value="" className="bg-[#0A0A0A]">Selecciona un servicio</option>
+                  {serviciosList.map((srv) => (
+                    <option key={srv.id || srv.nombre || srv} value={srv.nombre || srv} className="bg-[#0A0A0A]">
+                      {srv.nombre || srv.titulo || srv}
                     </option>
                   ))}
                 </select>
@@ -305,9 +292,10 @@ export default function Dashboard() {
                   onChange={handleChange}
                   className="w-full bg-[#050505] border border-zinc-800/80 text-white rounded-none px-4 py-3 text-xs outline-none focus:border-cyan-500/50 focus:bg-cyan-950/10 transition-all"
                 >
-                  {PELUQUEROS.map((peluquero) => (
-                    <option key={peluquero} value={peluquero} className="bg-[#0A0A0A]">
-                      {peluquero}
+                  <option value="" className="bg-[#0A0A0A]">Selecciona un peluquero</option>
+                  {peluquerosList.map((user) => (
+                    <option key={user.id || user.nombre || user} value={user.nombre || user} className="bg-[#0A0A0A]">
+                      {user.nombre || user.usuario || user.email || user}
                     </option>
                   ))}
                 </select>

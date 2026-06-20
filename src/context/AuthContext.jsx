@@ -4,7 +4,7 @@
  */
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
+import authService from '../services/authService';
 
 // Crear el contexto
 const AuthContext = createContext(null);
@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const initAuth = () => {
       try {
-        const session = authService.getCurrentSession();
+        const session = authService.getCurrentUser();
         if (session) {
           setUser(session);
         }
@@ -111,7 +111,7 @@ export function AuthProvider({ children }) {
   /**
    * Verifica si el usuario es administrador
    */
-  const isAdmin = user?.rol === 'admin';
+  const isAdmin = user?.rol === 'ADMIN';
 
   // Valor del contexto que se proporciona a todos los componentes
   const value = {

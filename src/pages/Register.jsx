@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import logoImage from '../assets/images/logo.jpeg';
 import Navbar from '../components/Navbar';
+import authService from '../services/authService';
+
 
 export default function Register() {
   // Estado para almacenar los datos del formulario de registro
@@ -49,28 +51,38 @@ export default function Register() {
   };
 
   // Función que se ejecuta cuando el usuario intenta enviar el formulario
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Validar
+  const newErrors = {};
+  if (!formData.nombre.trim()) newErrors.nombre = 'Nombre requerido';
+  if (!formData.email.trim()) newErrors.email = 'Email requerido';
+  if (formData.password.length < 6) newErrors.password = 'Mínimo 6 caracteres';
+  if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
+  
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
+  try {
+    const result = await authService.register({
+      nombre: formData.nombre,
+      email: formData.email,
+      password: formData.password,
+      telefono: formData.telefono,
+      rol: 'CLIENTE'
+    });
     
-    // Limpia los errores previos
-    setErrors({});
-    
-    // Muestra mensaje de que el registro está deshabilitado
-    setSuccess('Registro deshabilitado por el momento.');
-    
-    // Después de 2 segundos, limpia el formulario y los mensajes
+    setSuccess('¡Registro exitoso! Redirigiendo...');
     setTimeout(() => {
-      setFormData({
-        nombre: '',
-        email: '',
-        telefono: '',
-        password: '',
-        confirmPassword: ''
-      });
-      setErrors({});
-      setSuccess('');
-    }, 2000);
-  };
+      window.location.href = '/login';
+    }, 1500);
+  } catch (error) {
+    setErrors({ submit: error.message || 'Error al registrarse' });
+  }
+};
 
   return (
     // Contenedor principal con fondooscuro y animaciones de entrada
@@ -241,6 +253,14 @@ export default function Register() {
                 <p className="text-sm text-green-300 text-center">{success}</p>
               </div>
             )}
+
+            {/* Mensaje de error general en el registro */}
+            {errors.submit && (
+              <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg animate-shake">
+                <p className="text-sm text-red-400 text-center">{errors.submit}</p>
+              </div>
+            )}
+
 
             {/* Botón de envío del formulario */}
             <button
