@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { turnosAPI, serviciosAPI, usuariosAPI } from '../services/api';
 
@@ -17,6 +18,7 @@ const emptyForm = {
 export default function Dashboard() {
   const [turnos, setTurnos] = useState([]);
   const [serviciosList, setServiciosList] = useState([]);
+  const [usuariosList, setUsuariosList] = useState([]);
   const [peluquerosList, setPeluquerosList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -37,6 +39,7 @@ export default function Dashboard() {
         ]);
         setTurnos(resTurnos.data);
         setServiciosList(resServicios.data);
+        setUsuariosList(resUsuarios.data);
         setPeluquerosList(resUsuarios.data.filter(u => u.rol === 'ADMIN'));
       } catch (err) {
         setError('Error al cargar datos');
@@ -48,6 +51,22 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
+
+  const findClienteId = (nombreCliente, turnoObj) => {
+    if (turnoObj && turnoObj.clienteId) {
+      // Si el turno ya tiene un clienteId registrado en BD, devolvemos ese mismo.
+      return turnoObj.clienteId;
+    }
+    
+    // Filtramos todos los usuarios que coincidan con el nombre
+    const coincidencia = usuariosList.filter(u => u.nombre.toLowerCase() === nombreCliente.toLowerCase());
+    if (coincidencia.length > 0) {
+      // Priorizamos el usuario real que no tiene email temporal
+      const realUser = coincidencia.find(u => !u.email.endsWith('@temp.com'));
+      return realUser ? realUser.id : coincidencia[0].id;
+    }
+    return null;
+  };
 
   // filtra turnos por texto y select de estado
   const turnosFiltrados = useMemo(() => {
@@ -109,11 +128,24 @@ export default function Dashboard() {
     e.preventDefault();
     
     try {
+      const errorMsg = validateForm();
+      if (errorMsg) {
+        setError(errorMsg);
+        return;
+      }
+
+      // Resolve client ID by name if it matches an existing user
+      const matchedId = findClienteId(formData.cliente, formData);
+      const dataToSubmit = {
+        ...formData,
+        clienteId: matchedId
+      };
+
       if (editId) {
-        await turnosAPI.update(editId, formData);
+        await turnosAPI.update(editId, dataToSubmit);
         setSuccess('Turno actualizado');
       } else {
-        await turnosAPI.create(formData);
+        await turnosAPI.create(dataToSubmit);
         setSuccess('Turno creado');
       }
       
@@ -402,7 +434,19 @@ export default function Dashboard() {
                     turnosFiltrados.map((turno) => (
                       <tr key={turno.id} className="hover:bg-zinc-900/50 transition-colors group">
                         <td className="px-5 py-4">
-                          <p className="font-bold text-white uppercase text-xs tracking-wider">{turno.cliente}</p>
+                          {(() => {
+                            const clienteId = turno.clienteId || findClienteId(turno.cliente, turno);
+                            return clienteId ? (
+                              <Link 
+                                to={`/perfil/${clienteId}`}
+                                className="font-bold text-white uppercase text-xs tracking-wider hover:text-cyan-400 hover:underline transition-all"
+                              >
+                                {turno.cliente}
+                              </Link>
+                            ) : (
+                              <p className="font-bold text-white uppercase text-xs tracking-wider">{turno.cliente}</p>
+                            );
+                          })()}
                           <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest mt-1">{turno.telefono}</p>
                         </td>
                         <td className="px-5 py-4">

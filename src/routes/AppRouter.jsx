@@ -42,6 +42,7 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/home" element={<Home />} />
       <Route path="/perfil" element={<Perfil />} />
+      <Route path="/perfil/:id" element={<Perfil />} />
       <Route path="/reservar" element={<Reservar />} />
 
       {/* Rutas protegidas - Solo para administradores */}

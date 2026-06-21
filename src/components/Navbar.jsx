@@ -29,8 +29,16 @@ export default function Navbar() {
                     <div className="flex items-center gap-3">
                         {/* Perfil del usuario */}
                         <Link to="/perfil" className="flex items-center gap-3 bg-zinc-900/50 border border-zinc-800 px-4 py-2 rounded-full hover:border-cyan-500/50 hover:bg-cyan-900/20 transition-all cursor-pointer group">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 p-1 flex items-center justify-center border border-zinc-700 overflow-hidden font-bold text-white text-xs">
-                                {user?.nombre?.charAt(0)?.toUpperCase() || '?'}
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 p-0 flex items-center justify-center border border-zinc-700 overflow-hidden font-bold text-white text-xs">
+                                {user?.imagenUrl ? (
+                                    <img 
+                                        src={user.imagenUrl} 
+                                        alt={user.nombre} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    user?.nombre?.charAt(0)?.toUpperCase() || '?'
+                                )}
                             </div>
                             <span className="text-white text-xs font-bold uppercase tracking-wider group-hover:text-cyan-400 transition-colors">
                                 {user?.nombre || 'Usuario'}
