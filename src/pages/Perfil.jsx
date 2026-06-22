@@ -28,7 +28,7 @@ export default function Perfil() {
             return;
         }
 
-        // If viewing other profile but not admin, redirect
+        // Si esta viendo otro perfil pero no es admin, redirigir
         if (isViewingOther && !isAdmin) {
             navigate('/perfil');
             return;

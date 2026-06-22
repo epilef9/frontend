@@ -29,7 +29,7 @@ export default function Reservar() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    // Pre-fill user data when user changes or loads
+    // Rellenar previamente los datos del usuario cuando este cambie o se cargue.
     useEffect(() => {
         if (user) {
             setCliente(user.nombre || '');
@@ -37,7 +37,7 @@ export default function Reservar() {
         }
     }, [user]);
 
-    // Fetch initial list of services, barbers, and turnos
+    // Obtiene la lista inicial de servicios, barberos y turnos
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -71,7 +71,7 @@ export default function Reservar() {
         []
     );
 
-    // Calculate reserved hours for the selected date and peluquero
+    // Calcula las horas reservadas para la fecha y peluquero seleccionados
     const reservedHours = useMemo(() => {
         if (!peluquero) return [];
         return turnos
@@ -132,7 +132,7 @@ export default function Reservar() {
             setSuccess('¡Turno reservado exitosamente! Queda pendiente de confirmación.');
             setSelectedHour('');
             
-            // Reload turnos to update the availability view immediately
+            // Recarga los turnos para actualizar la vista de disponibilidad inmediatamente
             const resTurnos = await turnosAPI.getAll();
             setTurnos(resTurnos.data);
         } catch (err) {
@@ -439,4 +439,4 @@ export default function Reservar() {
             </div>
         </div>
     );
-}
+}
