@@ -65,12 +65,11 @@ export default function Perfil() {
                         t.peluquero === response?.data?.nombre || 
                         t.cliente === response?.data?.nombre
                     );
-                    // Ordenar de más reciente a más antiguo (por id descendente o combinación de fecha/hora)
+                    // Ordenar por fecha y hora descendente (el turno más cercano aparece primero)
                     misTurnos.sort((a, b) => {
-                        // Primero comparar por fecha y hora descendente, si falla por ID descendente
-                        const dtA = `${a.fecha}T${a.hora}`;
-                        const dtB = `${b.fecha}T${b.hora}`;
-                        return dtB.localeCompare(dtA) || b.id - a.id;
+                        const dateA = new Date(`${a.fecha}T${a.hora}`);
+                        const dateB = new Date(`${b.fecha}T${b.hora}`);
+                        return dateA - dateB;
                     });
                     setTurnosUsuario(misTurnos);
                 } catch (e) {

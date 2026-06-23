@@ -60,7 +60,7 @@ export default function Reservar() {
                 }
             } catch (err) {
                 console.error('Error al cargar datos:', err);
-                setError('Error al cargar la información requerida.');
+                setError('Debe iniciar sesión para realizar una reserva.');
             }
         };
         fetchData();
@@ -439,4 +439,4 @@ export default function Reservar() {
             </div>
         </div>
     );
-}
+}

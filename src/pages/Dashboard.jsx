@@ -72,18 +72,24 @@ export default function Dashboard() {
   const turnosFiltrados = useMemo(() => {
     const term = search.trim().toLowerCase();
 
-    return turnos.filter((t) => {
-      const matchSearch =
-        term.length === 0 ||
-        t.cliente.toLowerCase().includes(term) ||
-        t.telefono.toLowerCase().includes(term) ||
-        t.servicio.toLowerCase().includes(term) ||
-        t.peluquero.toLowerCase().includes(term);
+    return turnos
+      .filter((t) => {
+        const matchSearch =
+          term.length === 0 ||
+          t.cliente.toLowerCase().includes(term) ||
+          t.telefono.toLowerCase().includes(term) ||
+          t.servicio.toLowerCase().includes(term) ||
+          t.peluquero.toLowerCase().includes(term);
 
-      const matchEstado = filtroEstado === 'Todos' || t.estado === filtroEstado;
+        const matchEstado = filtroEstado === 'Todos' || t.estado === filtroEstado;
 
-      return matchSearch && matchEstado;
-    });
+        return matchSearch && matchEstado;
+      })
+      .sort((a, b) => {
+        const dateA = new Date(`${a.fecha}T${a.hora}`);
+        const dateB = new Date(`${b.fecha}T${b.hora}`);
+        return dateA - dateB;
+      });
   }, [turnos, search, filtroEstado]);
 
   // calcula los contadores para las tarjetas superiores
