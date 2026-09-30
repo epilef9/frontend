@@ -108,7 +108,7 @@ export default function Login() {
       // Redirige al usuario después de 1.5 segundos
       setTimeout(() => {
         // Si es admin, va al dashboard; si no, va al home
-        const redirectTo = result.user.rol === 'admin' ? '/dashboard' : '/home';
+        const redirectTo = result.user.rol === 'ADMIN' ? '/dashboard' : '/home';
         navigate(redirectTo);
       }, 1500);
     } else {
