@@ -48,8 +48,10 @@ async function renderLogin() {
 describe('Flujo de login (Login.jsx)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // expect(true).toBe(false);
   });
 
+  // 1) Formulario vacío
   it('muestra errores de validación si se envía el formulario vacío y no llama al servicio', async () => {
     const user = userEvent.setup();
     await renderLogin();
@@ -61,6 +63,7 @@ describe('Flujo de login (Login.jsx)', () => {
     expect(authService.login).not.toHaveBeenCalled();
   });
 
+  // 2) Contraseña mínima
   it('valida el largo mínimo de la contraseña (6 caracteres)', async () => {
     const user = userEvent.setup();
     await renderLogin();
@@ -73,6 +76,7 @@ describe('Flujo de login (Login.jsx)', () => {
     expect(authService.login).not.toHaveBeenCalled();
   });
 
+  // 3) Login de cliente
   it('login exitoso de un cliente: llama al servicio con los datos y redirige a /home', async () => {
     authService.login.mockResolvedValue({
       id: 1,
@@ -95,6 +99,7 @@ describe('Flujo de login (Login.jsx)', () => {
     await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/home'), { timeout: 3000 });
   });
 
+  // 4) Login de admin
   it('login exitoso de un ADMIN: redirige a /dashboard', async () => {
     // El backend devuelve el rol en mayúsculas (Usuario.Rol.ADMIN.toString())
     authService.login.mockResolvedValue({
@@ -114,6 +119,7 @@ describe('Flujo de login (Login.jsx)', () => {
     await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/dashboard'), { timeout: 3000 });
   });
 
+  // 5) Login fallido
   it('login fallido: muestra un mensaje de error y no redirige', async () => {
     // Forma real del error que llega desde el BFF (errorHandler.js): { error, status }
     authService.login.mockRejectedValue({
@@ -131,7 +137,8 @@ describe('Flujo de login (Login.jsx)', () => {
     expect(screen.queryByText('¡Inicio de sesión exitoso!')).not.toBeInTheDocument();
     expect(navigateMock).not.toHaveBeenCalled();
   });
-
+ 
+  // 6) Mostrar u ocultar contraseña
   it('el botón del ojo alterna la visibilidad de la contraseña', async () => {
     const user = userEvent.setup();
     await renderLogin();
